@@ -1,0 +1,103 @@
+header {
+  background: black;
+  color: aliceblue;
+}
+
+header h1 {
+  font-size: 48px;
+  font-weight: 900;
+  display: inline;
+  letter-spacing: -0.08em;
+}
+
+.SetLocationPage ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  list-style: none;
+
+  padding: 0px;
+}
+
+.ForecastPage ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0px;
+}
+
+.ForecastPage .Forecast {
+  width: 97%;
+  display: flex;
+  padding: 7px;
+  margin: 1rem;
+  background: linear-gradient(#f8f8f8, #fff);
+  box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.4);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.ForecastPage .Forecast img {
+  padding: 10px 40px;
+}
+
+.ForecastPage .Forecast span {
+  width: 48%;
+}
+
+.ForecastPage .Forecast p {
+  text-align: right;
+}
+/* 
+.ForecastDetailPage .Forecast img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: dashed 5px gray;
+} */
+/* The Modal (background) */
+.modal {
+  position: fixed;
+  z-index: 1;
+  padding-top: 50px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal .modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.modal .close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.modal .close:hover,
+.modal .close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.hero {
+  width: 97%;
+  background: #eee;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 1em;
+}

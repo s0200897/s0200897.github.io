@@ -1,0 +1,2 @@
+export const SET_LOCATION = 'SET_LOCATION'
+export const FETCH_FORECASTS = 'FETCH_FORECASTS'
