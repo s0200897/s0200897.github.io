@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { setLocation, fetchForecasts } from '../redux/actions'
-import api from '../api/OpenWeatherMapApi'
 import Location from './Location'
+import { connect } from 'react-redux'
+import { setLocation } from '../redux/actions'
+import api from '../api/OpenWeatherMapApi'
+import { fetchForecasts } from './App'
 
 let timeoutId = -1
 class SetLocationPage extends Component {
@@ -13,14 +14,8 @@ class SetLocationPage extends Component {
 
   _setLocation = location => {
     this.props.setLocation(location)
-    this._refreshForecasts(location)
-  }
-
-  _refreshForecasts(location) {
     if (!location) return
-    api.fetch5DaysForecast(location.id).then(forecasts => {
-      this.props.fetchForecasts(forecasts)
-    })
+    fetchForecasts(location)
   }
 
   _refreshLocations(needle) {
@@ -79,8 +74,8 @@ class SetLocationPage extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     setLocation: location => dispatch(setLocation(location)),
-    fetchForecasts: forecasts => dispatch(fetchForecasts(forecasts)),
   }
+  // fetchForecasts: forecasts => dispatch(fetchForecasts(forecasts)),
 }
 const mapStateToProps = state => {
   return {

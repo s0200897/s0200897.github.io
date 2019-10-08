@@ -39,8 +39,14 @@ header h1 {
   position: relative;
 }
 
+.ForecastPage .refresh {
+  background: transparent;
+  color: #fff;
+  border: 0;
+}
+
 .ForecastPage .Forecast img {
-  padding: 10px 40px;
+  padding: 10px 20px;
 }
 
 .ForecastPage .Forecast span {
@@ -49,6 +55,9 @@ header h1 {
 
 .ForecastPage .Forecast p {
   text-align: right;
+}
+.ForecastPage .error {
+  background-color: red;
 }
 /* 
 .ForecastDetailPage .Forecast img {

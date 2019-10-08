@@ -55,6 +55,7 @@ async function fetch5DaysForecast(locationID) {
     return polish5DaysForecast(result)
   } catch (error) {
     console.error(error)
+    throw error
   }
 }
 

@@ -46,6 +46,17 @@ class ForecastPage extends Component {
                 this.props.location.sys.country
               : 'Set Location'}
           </button>
+          <span className="refresh">
+            {this.props.isFetching ? (
+              <img alt="loading" src="/loading.gif" />
+            ) : this.props.error ? (
+              <span className="error">{this.props.error}</span>
+            ) : null}{' '}
+            last updated at{' '}
+            {Date(this.props.lastUpdated)
+              .toLocaleString()
+              .substring(16, 21)}
+          </span>
         </header>
         <h2>5-days forecast</h2>
         <ul>
@@ -75,6 +86,10 @@ class ForecastPage extends Component {
                   <li>
                     See the 3-hourly forecast for that date by clicking the day.
                   </li>
+                  <li>
+                    [NEW] Add auto refresh forecasts, and error catch and
+                    display
+                  </li>
                 </ol>
               </div>
             </div>
@@ -100,7 +115,10 @@ class ForecastPage extends Component {
 const mapStateToProps = state => {
   return {
     location: state.location,
-    forecasts: state.forecasts,
+    isFetching: state.forecasts.isFetching,
+    lastUpdated: state.forecasts.lastUpdated,
+    error: state.forecasts.error,
+    forecasts: state.forecasts.items,
   }
 }
 
