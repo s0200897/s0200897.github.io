@@ -18,16 +18,19 @@ class SetLocationPage extends Component {
     fetchForecasts(location)
   }
 
-  _refreshLocations(needle) {
+  _refreshLocations(needle, noWait = false) {
     clearTimeout(timeoutId)
     if (!needle && needle.length < 3) {
       this.setState({ locations: [] })
       return
     }
-    timeoutId = setTimeout(async () => {
-      let locations = await api.fetchLocations(needle)
-      this.setState({ locations })
-    }, 230)
+    timeoutId = setTimeout(
+      () =>
+        api.fetchLocations(needle).then(locations => {
+          this.setState({ locations })
+        }),
+      noWait ? 0 : 810
+    )
   }
 
   render() {
@@ -47,26 +50,37 @@ class SetLocationPage extends Component {
               e.preventDefault()
               this._refreshLocations(e.target.value.trim())
             }}
+            onKeyPress={e => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                this._refreshLocations(e.target.value.trim(), true)
+              }
+            }}
             autoFocus={true}
           ></input>
-          <ul>
-            {this.state.locations
-              ? this.state.locations.map(location => (
-                  <Location
-                    key={location.id}
-                    icon={location.weather[0].icon}
-                    location={location.name + ', ' + location.sys.country}
-                    coord={location.coord.lat + ', ' + location.coord.lon}
-                    onClick={() => {
-                      this._setLocation(location)
-                      this.props.onClose()
-                    }}
-                  />
-                ))
-              : null}
-          </ul>
+          {this._renderLocations()}
         </div>
       </article>
+    )
+  }
+
+  _renderLocations() {
+    if (!this.state.locations) return
+    return (
+      <ul>
+        {this.state.locations.map(location => (
+          <Location
+            key={location.id}
+            icon={location.weather[0].icon}
+            location={location.name + ', ' + location.sys.country}
+            coord={location.coord.lat + ', ' + location.coord.lon}
+            onClick={() => {
+              this._setLocation(location)
+              this.props.onClose()
+            }}
+          />
+        ))}
+      </ul>
     )
   }
 }

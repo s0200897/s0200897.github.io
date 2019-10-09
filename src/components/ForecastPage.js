@@ -14,6 +14,19 @@ class ForecastPage extends Component {
     }
   }
 
+  render() {
+    const forecasts = this.props.forecasts
+
+    return (
+      <div className="ForecastPage">
+        {this._renderHeader()}
+        {forecasts ? this._render5DaysForecast(forecasts) : this._renderHero()}
+        {this._renderForecastDetailPage()}
+        {this._renderSetLocationPage()}
+      </div>
+    )
+  }
+
   showForecastDetailPage = index => {
     this.setState({ showForecastDetailPage: true, selectDateIndex: index })
   }
@@ -30,85 +43,93 @@ class ForecastPage extends Component {
     this.setState({ showSetLocationPage: false })
   }
 
-  render() {
-    const forecasts = this.props.forecasts
-    const detailForecast = this.state.showForecastDetailPage
-      ? this.props.forecasts[this.state.selectDateIndex]
-      : null
+  _renderHeader() {
+    const { lastUpdated, isFetching, location, error } = this.props
     return (
-      <div className="ForecastPage">
-        <header>
-          <h1>Weather Forecast </h1>
-          <button onClick={this.showSetLocationPage}>
-            {this.props.location
-              ? this.props.location.name +
-                ', ' +
-                this.props.location.sys.country
-              : 'Set Location'}
-          </button>
-          <span className="refresh">
-            {this.props.isFetching ? (
-              <img alt="loading" src="/loading.gif" />
-            ) : this.props.error ? (
-              <span className="error">{this.props.error}</span>
-            ) : null}{' '}
-            last updated at{' '}
-            {Date(this.props.lastUpdated)
-              .toLocaleString()
-              .substring(16, 21)}
-          </span>
-        </header>
+      <header>
+        <h1>Weather Forecast </h1>
+        <button onClick={this.showSetLocationPage}>
+          {location
+            ? location.name + ', ' + location.sys.country
+            : '[ Set Location ]'}
+        </button>
+        <span className="refresh">
+          {isFetching ? (
+            <img alt="loading" src="/loading.gif" />
+          ) : error ? (
+            <span className="error">{error}</span>
+          ) : null}
+          {lastUpdated ? (
+            <span>
+              {' '}
+              last updated at{' '}
+              {Date(lastUpdated)
+                .toLocaleString()
+                .substring(16, 21)}
+            </span>
+          ) : null}
+        </span>
+      </header>
+    )
+  }
+  _render5DaysForecast(forecasts) {
+    return (
+      <div>
         <h2>5-days forecast</h2>
         <ul>
-          {forecasts ? (
-            forecasts.map((forecast, index) => (
-              <Forecast
-                key={forecast.day}
-                {...forecast}
-                onClick={() => {
-                  this.showForecastDetailPage(index)
-                }}
-              />
-            ))
-          ) : (
-            <div className="hero">
-              <h4>Hi,</h4>
-              <div>
-                This is a weather forecast app, you can:
-                <ol>
-                  <li>
-                    Set a location, click button [Set Location] on top, you can
-                    also change location after set a location.
-                  </li>
-                  <li>
-                    See the 5-days forecast show in page after location set.
-                  </li>
-                  <li>
-                    See the 3-hourly forecast for that date by clicking the day.
-                  </li>
-                  <li>
-                    [NEW] Add auto refresh forecasts, and error catch and
-                    display
-                  </li>
-                </ol>
-              </div>
-            </div>
-          )}
+          {forecasts.map((forecast, index) => (
+            <Forecast
+              key={forecast.day}
+              {...forecast}
+              onClick={() => {
+                this.showForecastDetailPage(index)
+              }}
+            />
+          ))}
         </ul>
-
-        {this.state.showForecastDetailPage ? (
-          <ForecastDetailPage
-            date={detailForecast.day}
-            forecastDetails={detailForecast.hourly}
-            onClose={() => this.hideForecastDetailPage()}
-          />
-        ) : null}
-
-        {this.state.showSetLocationPage ? (
-          <SetLocationPage onClose={this.hideSetLocationPage} />
-        ) : null}
       </div>
     )
+  }
+  _renderHero() {
+    return (
+      <div className="hero">
+        <h4>Hi,</h4>
+        <div>
+          This is a weather forecast app, you can:
+          <ol>
+            <li>
+              Set a location, click button [Set Location] on top, you can also
+              change location after set a location.
+            </li>
+            <li>See the 5-days forecast show in page after location set.</li>
+            <li>
+              See the 3-hourly forecast for that date by clicking the day.
+            </li>
+            <li>
+              [NEW] Add auto refresh forecasts, and error catch and display
+            </li>
+          </ol>
+        </div>
+      </div>
+    )
+  }
+
+  _renderForecastDetailPage() {
+    if (!this.state.showForecastDetailPage) return null
+    const detailForecast = this.props.forecasts[this.state.selectDateIndex]
+
+    return (
+      <ForecastDetailPage
+        date={detailForecast.day}
+        forecastDetails={detailForecast.hourly}
+        onClose={() => this.hideForecastDetailPage()}
+      />
+    )
+  }
+
+  _renderSetLocationPage() {
+    if (!this.state.showSetLocationPage) return null
+    return <SetLocationPage onClose={this.hideSetLocationPage} />
   }
 }
 
